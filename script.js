@@ -46,7 +46,7 @@ window.onload = function() {
     function generateCoins() {
         for (let i = 0; i < 10; i++) {
             let coin = {
-                x: Math.random() * canvas.width * 2,
+                x: Math.random() * canvas.width * 2 + canvas.width,
                 y: Math.random() * (canvas.height - 100),
                 width: 30,
                 height: 30,
@@ -59,7 +59,7 @@ window.onload = function() {
     function generateObstacles() {
         for (let i = 0; i < 5; i++) {
             let obstacle = {
-                x: Math.random() * canvas.width * 2,
+                x: Math.random() * canvas.width * 2 + canvas.width,
                 y: canvas.height - 60,
                 width: 50,
                 height: 50,
@@ -103,6 +103,7 @@ window.onload = function() {
             } else if (obstacle.type === 3) {
                 ctx.drawImage(obstacleImg3, obstacle.x, obstacle.y, obstacle.width, obstacle.height);
             }
+            obstacle.x -= speed;
         });
     }
 
@@ -140,7 +141,7 @@ window.onload = function() {
 
         // Check for obstacle collisions
         if (!invincible) {
-            obstacles.forEach(obstacle => {
+            obstacles = obstacles.filter(obstacle => {
                 if (
                     player.x < obstacle.x + obstacle.width &&
                     player.x + player.width > obstacle.x &&
@@ -157,7 +158,9 @@ window.onload = function() {
                         }
                         document.location.reload();
                     }
+                    return false;
                 }
+                return true;
             });
         }
     }
@@ -184,7 +187,7 @@ window.onload = function() {
     }
 
     function increaseSpeed() {
-        speed += 0.01;
+        speed += 0.001;  // Increase speed slowly
     }
 
     function gameLoop() {
