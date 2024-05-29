@@ -91,6 +91,7 @@ window.onload = function() {
             } else if (coin.type === 3) {
                 ctx.drawImage(coinImg3, coin.x, coin.y, coin.width, coin.height);
             }
+            coin.x -= speed;
         });
     }
 
@@ -187,7 +188,7 @@ window.onload = function() {
     }
 
     function increaseSpeed() {
-        speed += 0.001;  // Increase speed slowly
+        speed += 0.000015;  // Increase speed very slowly
     }
 
     function gameLoop() {
