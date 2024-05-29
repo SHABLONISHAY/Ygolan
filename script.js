@@ -29,7 +29,7 @@ window.onload = function() {
         width: 50,
         height: 50,
         dy: 0,
-        jumpPower: -15,
+        jumpPower: -20,  // Increase jump power
         gravity: 1
     };
 
@@ -39,14 +39,14 @@ window.onload = function() {
     let hearts = 5;
     let highScore = 0;
     let backgroundX = 0;
-    let speed = 1;
+    let speed = 4;  // Increase speed
     let invincible = false;
     let invincibleEndTime = 0;
 
     function generateCoin() {
         let coin = {
             x: canvas.width + Math.random() * canvas.width,
-            y: Math.random() * (canvas.height - 100),
+            y: canvas.height - 60 - Math.random() * 150,  // Place coins within jumpable height
             width: 30,
             height: 30,
             type: Math.floor(Math.random() * 3) + 1
@@ -57,7 +57,7 @@ window.onload = function() {
     function generateObstacle() {
         let lastObstacleX = obstacles.length ? obstacles[obstacles.length - 1].x : 0;
         let obstacle = {
-            x: Math.max(canvas.width + Math.random() * canvas.width, lastObstacleX + 100), // Ensure distance between obstacles
+            x: Math.max(canvas.width + Math.random() * canvas.width, lastObstacleX + 150), // Ensure distance between obstacles
             y: canvas.height - 60,
             width: 50,
             height: 50,
@@ -185,7 +185,7 @@ window.onload = function() {
     }
 
     function increaseSpeed() {
-        speed += 0.00003;  // Increase speed gradually
+        speed += 0.0001;  // Increase speed gradually
     }
 
     function gameLoop() {
@@ -200,10 +200,10 @@ window.onload = function() {
         increaseSpeed();
 
         // Generate new coins and obstacles
-        if (Math.random() < 0.02) {
+        if (Math.random() < 0.03) {
             generateCoin();
         }
-        if (Math.random() < 0.01) {
+        if (Math.random() < 0.02) {
             generateObstacle();
         }
 
