@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>שבו"ש עושה גיבוש</title>
+    <title>שב"וש עושה גיבוש</title>
     <style>
         body {
             margin: 0;
@@ -28,4 +28,19 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: transparent
+            background-color: transparent;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="gameInfo">
+        <div id="score">Score: 0</div>
+        <div id="hearts">Hearts: 5</div>
+        <div id="highScore">High Score: 0</div>
+    </div>
+    <canvas id="gameCanvas"></canvas>
+    <div id="flashOverlay"></div>
+    <script src="script.js"></script>
+</body>
+</html>
