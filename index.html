@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>שב"וש עושה גיבוש</title>
+    <title>שבו"ש עושה גיבוש</title>
     <style>
         body {
             margin: 0;
             overflow: hidden;
             background-color: #87CEEB;
+            position: relative;
         }
         canvas {
             display: block;
@@ -21,15 +22,10 @@
             font-size: 20px;
             font-family: Arial, sans-serif;
         }
-    </style>
-</head>
-<body>
-    <div id="gameInfo">
-        <span id="score">Score: 0</span>
-        <span id="hearts">Hearts: 5</span>
-        <span id="highScore">High Score: 0</span>
-    </div>
-    <canvas id="gameCanvas"></canvas>
-    <script src="script.js"></script>
-</body>
-</html>
+        #flashOverlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: transparent
