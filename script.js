@@ -2,8 +2,13 @@ window.onload = function() {
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
 
-    canvas.width = 800;
-    canvas.height = 400;
+    // Set canvas to fill the entire window
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
 
     // Load images
     const backgroundImg = new Image();
@@ -29,7 +34,7 @@ window.onload = function() {
         width: 50,
         height: 50,
         dy: 0,
-        jumpPower: -20,  // Increase jump power
+        jumpPower: -20,
         gravity: 1
     };
 
@@ -39,14 +44,14 @@ window.onload = function() {
     let hearts = 5;
     let highScore = 0;
     let backgroundX = 0;
-    let speed = 6;  // Increase speed
+    let speed = 2;  // Start at a slower speed
     let invincible = false;
     let invincibleEndTime = 0;
 
     function generateCoin() {
         let coin = {
             x: canvas.width + Math.random() * canvas.width,
-            y: canvas.height - 100 - Math.random() * 50,  // Lower coin height
+            y: canvas.height - 100 - Math.random() * 50,
             width: 30,
             height: 30,
             type: Math.floor(Math.random() * 3) + 1
@@ -57,10 +62,10 @@ window.onload = function() {
     function generateObstacle() {
         let lastObstacleX = obstacles.length ? obstacles[obstacles.length - 1].x : 0;
         let obstacle = {
-            x: Math.max(canvas.width + Math.random() * canvas.width, lastObstacleX + 150), // Ensure distance between obstacles
-            y: canvas.height - 50,  // Slightly lower obstacle height
-            width: 40,  // Smaller obstacle width
-            height: 40,  // Smaller obstacle height
+            x: Math.max(canvas.width + Math.random() * canvas.width, lastObstacleX + 150),
+            y: canvas.height - 50,
+            width: 40,
+            height: 40,
             type: Math.floor(Math.random() * 3) + 1
         };
         obstacles.push(obstacle);
@@ -185,7 +190,7 @@ window.onload = function() {
     }
 
     function increaseSpeed() {
-        speed += 0.001;  // Increase speed gradually
+        speed += 0.002;  // Increase speed gradually
     }
 
     function gameLoop() {
