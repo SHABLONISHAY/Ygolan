@@ -39,34 +39,31 @@ window.onload = function() {
     let hearts = 5;
     let highScore = 0;
     let backgroundX = 0;
-    let speed = 2;
+    let speed = 1;
     let invincible = false;
     let invincibleEndTime = 0;
 
-    function generateCoins() {
-        for (let i = 0; i < 10; i++) {
-            let coin = {
-                x: Math.random() * canvas.width * 2 + canvas.width,
-                y: Math.random() * (canvas.height - 100),
-                width: 30,
-                height: 30,
-                type: Math.floor(Math.random() * 3) + 1
-            };
-            coins.push(coin);
-        }
+    function generateCoin() {
+        let coin = {
+            x: canvas.width + Math.random() * canvas.width,
+            y: Math.random() * (canvas.height - 100),
+            width: 30,
+            height: 30,
+            type: Math.floor(Math.random() * 3) + 1
+        };
+        coins.push(coin);
     }
 
-    function generateObstacles() {
-        for (let i = 0; i < 5; i++) {
-            let obstacle = {
-                x: Math.random() * canvas.width * 2 + canvas.width,
-                y: canvas.height - 60,
-                width: 50,
-                height: 50,
-                type: Math.floor(Math.random() * 3) + 1
-            };
-            obstacles.push(obstacle);
-        }
+    function generateObstacle() {
+        let lastObstacleX = obstacles.length ? obstacles[obstacles.length - 1].x : 0;
+        let obstacle = {
+            x: Math.max(canvas.width + Math.random() * canvas.width, lastObstacleX + 100), // Ensure distance between obstacles
+            y: canvas.height - 60,
+            width: 50,
+            height: 50,
+            type: Math.floor(Math.random() * 3) + 1
+        };
+        obstacles.push(obstacle);
     }
 
     function drawBackground() {
@@ -188,7 +185,7 @@ window.onload = function() {
     }
 
     function increaseSpeed() {
-        speed += 0.000015;  // Increase speed very slowly
+        speed += 0.00003;  // Increase speed gradually
     }
 
     function gameLoop() {
@@ -202,6 +199,14 @@ window.onload = function() {
         handleCollision();
         increaseSpeed();
 
+        // Generate new coins and obstacles
+        if (Math.random() < 0.02) {
+            generateCoin();
+        }
+        if (Math.random() < 0.01) {
+            generateObstacle();
+        }
+
         requestAnimationFrame(gameLoop);
     }
 
@@ -212,8 +217,8 @@ window.onload = function() {
     });
 
     backgroundImg.onload = () => {
-        generateCoins();
-        generateObstacles();
+        generateCoin();
+        generateObstacle();
         gameLoop();
     };
 };
