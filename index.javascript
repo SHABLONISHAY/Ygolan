@@ -7,27 +7,27 @@ window.onload = function() {
 
   // Load images
   const backgroundImg = new Image();
-  backgroundImg.src = 'https://github.com/SHABLONISHAY/GOLAN/blob/9530bf0ec6bcfd85410be85b3af2d311ff772a73/background.png';
+  backgroundImg.src = 'https://github.com/SHABLONISHAY/Ygolan/blob/45b3da042a60d2f3a1ab8fb7bfa9e03001b5af7b/background.png';
   const playerImg = new Image();
-  playerImg.src = 'https://github.com/SHABLONISHAY/GOLAN/blob/9530bf0ec6bcfd85410be85b3af2d311ff772a73/player.png';
+  playerImg.src = 'https://github.com/SHABLONISHAY/Ygolan/blob/45b3da042a60d2f3a1ab8fb7bfa9e03001b5af7b/player.png';
 
   const coinImg1 = new Image();
-  coinImg1.src = 'https://github.com/SHABLONISHAY/GOLAN/blob/9530bf0ec6bcfd85410be85b3af2d311ff772a73/coin1.png';
+  coinImg1.src = 'https://github.com/SHABLONISHAY/Ygolan/blob/45b3da042a60d2f3a1ab8fb7bfa9e03001b5af7b/coin1.png';
 
   const coinImg2 = new Image();
-  coinImg2.src = 'https://github.com/SHABLONISHAY/GOLAN/blob/9530bf0ec6bcfd85410be85b3af2d311ff772a73/coin2.png';
+  coinImg2.src = 'https://github.com/SHABLONISHAY/Ygolan/blob/45b3da042a60d2f3a1ab8fb7bfa9e03001b5af7b/coin2.png';
 
   const coinImg3 = new Image();
-  coinImg3.src = 'https://github.com/SHABLONISHAY/GOLAN/blob/9530bf0ec6bcfd85410be85b3af2d311ff772a73/coin3.png';
+  coinImg3.src = 'https://github.com/SHABLONISHAY/Ygolan/blob/45b3da042a60d2f3a1ab8fb7bfa9e03001b5af7b/coin3.png';
 
   const obstacleImg1 = new Image();
-  obstacleImg1.src = 'https://github.com/SHABLONISHAY/GOLAN/blob/9530bf0ec6bcfd85410be85b3af2d311ff772a73/obstacle1.png';
+  obstacleImg1.src = 'https://github.com/SHABLONISHAY/Ygolan/blob/45b3da042a60d2f3a1ab8fb7bfa9e03001b5af7b/obstacle1.png';
 
   const obstacleImg2 = new Image();
-  obstacleImg2.src = 'https://github.com/SHABLONISHAY/GOLAN/blob/9530bf0ec6bcfd85410be85b3af2d311ff772a73/obstacle2.png';
+  obstacleImg2.src = 'https://github.com/SHABLONISHAY/Ygolan/blob/45b3da042a60d2f3a1ab8fb7bfa9e03001b5af7b/obstacle2.png';
 
   const obstacleImg3 = new Image();
-  obstacleImg3.src = 'https://github.com/SHABLONISHAY/GOLAN/blob/9530bf0ec6bcfd85410be85b3af2d311ff772a73/obstacle3.png';
+  obstacleImg3.src = 'https://github.com/SHABLONISHAY/Ygolan/blob/45b3da042a60d2f3a1ab8fb7bfa9e03001b5af7b/obstacle3.png';
 
   let player = {
     x: 50,
