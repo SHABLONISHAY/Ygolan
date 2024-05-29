@@ -1,11 +1,13 @@
 window.onload = function() {
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
+    const flashOverlay = document.getElementById('flashOverlay');
 
     // Set canvas to fill the entire window
     function resizeCanvas() {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
+        scaleGameElements();
     }
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
@@ -48,12 +50,28 @@ window.onload = function() {
     let invincible = false;
     let invincibleEndTime = 0;
 
+    function scaleGameElements() {
+        player.width = canvas.width / 16;
+        player.height = canvas.height / 8;
+        player.jumpPower = -canvas.height / 20;
+
+        coins.forEach(coin => {
+            coin.width = canvas.width / 26.67;
+            coin.height = canvas.height / 13.33;
+        });
+
+        obstacles.forEach(obstacle => {
+            obstacle.width = canvas.width / 20;
+            obstacle.height = canvas.height / 10;
+        });
+    }
+
     function generateCoin() {
         let coin = {
             x: canvas.width + Math.random() * canvas.width,
             y: canvas.height - 100 - Math.random() * 50,
-            width: 30,
-            height: 30,
+            width: canvas.width / 26.67,
+            height: canvas.height / 13.33,
             type: Math.floor(Math.random() * 3) + 1
         };
         coins.push(coin);
@@ -63,9 +81,9 @@ window.onload = function() {
         let lastObstacleX = obstacles.length ? obstacles[obstacles.length - 1].x : 0;
         let obstacle = {
             x: Math.max(canvas.width + Math.random() * canvas.width, lastObstacleX + 150),
-            y: canvas.height - 50,
-            width: 40,
-            height: 40,
+            y: canvas.height - canvas.height / 10,
+            width: canvas.width / 20,
+            height: canvas.height / 10,
             type: Math.floor(Math.random() * 3) + 1
         };
         obstacles.push(obstacle);
@@ -182,9 +200,10 @@ window.onload = function() {
     function flashScreen(color) {
         invincible = true;
         invincibleEndTime = Date.now() + 1500;
-        document.body.style.backgroundColor = color;
+        flashOverlay.style.backgroundColor = color;
+        flashOverlay.style.opacity = '0.5';
         setTimeout(() => {
-            document.body.style.backgroundColor = '#87CEEB';
+            flashOverlay.style.opacity = '0';
             invincible = false;
         }, 1500);
     }
