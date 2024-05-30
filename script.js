@@ -142,6 +142,7 @@ window.onload = function() {
 
         if (score % 100 === 0) {
           hearts += 1;
+          flashScreen('gold');
         }
 
         return false;
@@ -159,6 +160,7 @@ window.onload = function() {
           player.y + player.height > obstacle.y
         ) {
           hearts -= 1;
+          flashScreen('darkred');
           if (hearts <= 0) {
             document.getElementById('gameOverMessage').innerText = 'נגמר המשחק! הניקוד שלך: ' + score;
             document.getElementById('gameOverMessage').style.display = 'block';
@@ -186,8 +188,27 @@ window.onload = function() {
     }
   }
 
+  function flashScreen(color) {
+    invincible = true;
+    invincibleEndTime = Date.now() + 1500;
+    const flash = document.createElement('div');
+    flash.style.position = 'fixed';
+    flash.style.top = '0';
+    flash.style.left = '0';
+    flash.style.width = '100%';
+    flash.style.height = '100%';
+    flash.style.backgroundColor = color;
+    flash.style.opacity = '0.5';
+    flash.style.zIndex = '10';
+    document.body.appendChild(flash);
+    setTimeout(() => {
+      document.body.removeChild(flash);
+      invincible = false;
+    }, 1500);
+  }
+
   function increaseSpeed() {
-    speed += 0.0005;
+    speed += 0.001; // העלאת המהירות בצורה הדרגתית
   }
 
   function gameLoop() {
@@ -199,9 +220,9 @@ window.onload = function() {
     drawScoreAndHearts();
     updatePlayer();
     handleCollision();
-    generateCoins();
-    generateObstacles();
     increaseSpeed();
+    generateCoins(); // יצירת מטבעות חדשים במידת הצורך
+    generateObstacles(); // יצירת מכשולים חדשים במידת הצורך
 
     requestAnimationFrame(gameLoop);
   }
@@ -212,9 +233,11 @@ window.onload = function() {
     }
   });
 
-  const imagesToLoad = [backgroundImg, playerImg, coinImg1, coinImg2, coinImg3, obstacleImg1, obstacleImg2, obstacleImg3];
   let imagesLoaded = 0;
-
+  const imagesToLoad = [
+    backgroundImg, playerImg, coinImg1, coinImg2, coinImg3, 
+    obstacleImg1, obstacleImg2, obstacleImg3
+  ];
   imagesToLoad.forEach(image => {
     image.onload = () => {
       imagesLoaded++;
