@@ -50,30 +50,32 @@ window.onload = function() {
   let invincibleEndTime = 0;
 
   function generateCoins() {
-    coins = [];
-    for (let i = 0; i < 10; i++) {
-      let coin = {
-        x: canvas.width + Math.random() * canvas.width,
-        y: Math.random() * (canvas.height - 200),
-        width: 50,
-        height: 50,
-        type: Math.floor(Math.random() * 3) + 1
-      };
-      coins.push(coin);
+    if (coins.length < 10) {
+      for (let i = 0; i < 10; i++) {
+        let coin = {
+          x: canvas.width + Math.random() * canvas.width,
+          y: Math.random() * (canvas.height - 200),
+          width: 50,
+          height: 50,
+          type: Math.floor(Math.random() * 3) + 1
+        };
+        coins.push(coin);
+      }
     }
   }
 
   function generateObstacles() {
-    obstacles = [];
-    for (let i = 0; i < 5; i++) {
-      let obstacle = {
-        x: canvas.width + Math.random() * canvas.width,
-        y: canvas.height - 150,
-        width: 100,
-        height: 100,
-        type: Math.floor(Math.random() * 3) + 1
-      };
-      obstacles.push(obstacle);
+    if (obstacles.length < 5) {
+      for (let i = 0; i < 5; i++) {
+        let obstacle = {
+          x: canvas.width + Math.random() * canvas.width,
+          y: canvas.height - 150,
+          width: 100,
+          height: 100,
+          type: Math.floor(Math.random() * 3) + 1
+        };
+        obstacles.push(obstacle);
+      }
     }
   }
 
@@ -218,6 +220,8 @@ window.onload = function() {
     drawScoreAndHearts();
     updatePlayer();
     handleCollision();
+    generateCoins();
+    generateObstacles();
     increaseSpeed();
 
     requestAnimationFrame(gameLoop);
@@ -229,9 +233,17 @@ window.onload = function() {
     }
   });
 
-  backgroundImg.onload = () => {
-    generateCoins();
-    generateObstacles();
-    gameLoop();
-  };
+  const imagesToLoad = [backgroundImg, playerImg, coinImg1, coinImg2, coinImg3, obstacleImg1, obstacleImg2, obstacleImg3];
+  let imagesLoaded = 0;
+
+  imagesToLoad.forEach(image => {
+    image.onload = () => {
+      imagesLoaded++;
+      if (imagesLoaded === imagesToLoad.length) {
+        generateCoins();
+        generateObstacles();
+        gameLoop();
+      }
+    };
+  });
 };
