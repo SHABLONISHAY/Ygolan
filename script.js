@@ -31,11 +31,11 @@ window.onload = function() {
 
   let player = {
     x: 50,
-    y: canvas.height - 100,
-    width: 50,
-    height: 50,
+    y: canvas.height - 150,
+    width: 100,
+    height: 100,
     dy: 0,
-    jumpPower: -15,
+    jumpPower: -20,
     gravity: 1
   };
 
@@ -50,12 +50,13 @@ window.onload = function() {
   let invincibleEndTime = 0;
 
   function generateCoins() {
+    coins = [];
     for (let i = 0; i < 10; i++) {
       let coin = {
-        x: Math.random() * canvas.width * 2,
-        y: Math.random() * (canvas.height - 100),
-        width: 30,
-        height: 30,
+        x: canvas.width + Math.random() * canvas.width,
+        y: Math.random() * (canvas.height - 200),
+        width: 50,
+        height: 50,
         type: Math.floor(Math.random() * 3) + 1
       };
       coins.push(coin);
@@ -63,12 +64,13 @@ window.onload = function() {
   }
 
   function generateObstacles() {
+    obstacles = [];
     for (let i = 0; i < 5; i++) {
       let obstacle = {
-        x: Math.random() * canvas.width * 2,
-        y: canvas.height - 100,
-        width: 50,
-        height: 50,
+        x: canvas.width + Math.random() * canvas.width,
+        y: canvas.height - 150,
+        width: 100,
+        height: 100,
         type: Math.floor(Math.random() * 3) + 1
       };
       obstacles.push(obstacle);
@@ -97,6 +99,7 @@ window.onload = function() {
       } else if (coin.type === 3) {
         ctx.drawImage(coinImg3, coin.x, coin.y, coin.width, coin.height);
       }
+      coin.x -= speed;
     });
   }
 
@@ -109,6 +112,7 @@ window.onload = function() {
       } else if (obstacle.type === 3) {
         ctx.drawImage(obstacleImg3, obstacle.x, obstacle.y, obstacle.width, obstacle.height);
       }
+      obstacle.x -= speed;
     });
   }
 
@@ -185,15 +189,24 @@ window.onload = function() {
   function flashScreen(color) {
     invincible = true;
     invincibleEndTime = Date.now() + 1500;
-    document.body.style.backgroundColor = color;
+    const flash = document.createElement('div');
+    flash.style.position = 'fixed';
+    flash.style.top = 0;
+    flash.style.left = 0;
+    flash.style.width = '100%';
+    flash.style.height = '100%';
+    flash.style.backgroundColor = color;
+    flash.style.opacity = 0.5;
+    flash.style.zIndex = 2;
+    document.body.appendChild(flash);
     setTimeout(() => {
-      document.body.style.backgroundColor = '#87CEEB';
+      document.body.removeChild(flash);
       invincible = false;
     }, 1500);
   }
 
   function increaseSpeed() {
-    speed += 0.0001;
+    speed += 0.0005;
   }
 
   function gameLoop() {
