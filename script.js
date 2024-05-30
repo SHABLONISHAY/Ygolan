@@ -198,7 +198,7 @@ window.onload = function() {
     flash.style.width = '100%';
     flash.style.height = '100%';
     flash.style.backgroundColor = color;
-    flash.style.opacity = '0.5';
+    flash.style.opacity = '1'; // ללא שקיפות
     flash.style.zIndex = '10';
     document.body.appendChild(flash);
     setTimeout(() => {
