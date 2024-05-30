@@ -142,7 +142,6 @@ window.onload = function() {
 
         if (score % 100 === 0) {
           hearts += 1;
-          flashScreen('gold');
         }
 
         return false;
@@ -160,7 +159,6 @@ window.onload = function() {
           player.y + player.height > obstacle.y
         ) {
           hearts -= 1;
-          flashScreen('darkred');
           if (hearts <= 0) {
             document.getElementById('gameOverMessage').innerText = 'נגמר המשחק! הניקוד שלך: ' + score;
             document.getElementById('gameOverMessage').style.display = 'block';
@@ -186,25 +184,6 @@ window.onload = function() {
     if (player.y + player.height >= canvas.height) {
       player.dy = player.jumpPower;
     }
-  }
-
-  function flashScreen(color) {
-    invincible = true;
-    invincibleEndTime = Date.now() + 1500;
-    const flash = document.createElement('div');
-    flash.style.position = 'fixed';
-    flash.style.top = 0;
-    flash.style.left = 0;
-    flash.style.width = '100%';
-    flash.style.height = '100%';
-    flash.style.backgroundColor = color;
-    flash.style.opacity = 0.5;
-    flash.style.zIndex = 2;
-    document.body.appendChild(flash);
-    setTimeout(() => {
-      document.body.removeChild(flash);
-      invincible = false;
-    }, 1500);
   }
 
   function increaseSpeed() {
