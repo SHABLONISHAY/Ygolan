@@ -2,15 +2,9 @@ window.onload = function() {
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
 
-    // Set canvas to fill the entire window
-    function resizeCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    }
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 
-    // Load images
     const backgroundImg = new Image();
     backgroundImg.src = 'images/background.png';
     const playerImg = new Image();
@@ -30,11 +24,11 @@ window.onload = function() {
 
     let player = {
         x: 50,
-        y: canvas.height - 60,
+        y: canvas.height - 100,
         width: 50,
         height: 50,
         dy: 0,
-        jumpPower: -20,
+        jumpPower: -15,
         gravity: 1
     };
 
@@ -44,31 +38,34 @@ window.onload = function() {
     let hearts = 5;
     let highScore = 0;
     let backgroundX = 0;
-    let speed = 2;  // Start at a slower speed
+    let speed = 2;
     let invincible = false;
     let invincibleEndTime = 0;
 
-    function generateCoin() {
-        let coin = {
-            x: canvas.width + Math.random() * canvas.width,
-            y: canvas.height - 100 - Math.random() * 50,
-            width: 30,
-            height: 30,
-            type: Math.floor(Math.random() * 3) + 1
-        };
-        coins.push(coin);
+    function generateCoins() {
+        for (let i = 0; i < 10; i++) {
+            let coin = {
+                x: Math.random() * canvas.width * 2,
+                y: Math.random() * (canvas.height - 100),
+                width: 30,
+                height: 30,
+                type: Math.floor(Math.random() * 3) + 1
+            };
+            coins.push(coin);
+        }
     }
 
-    function generateObstacle() {
-        let lastObstacleX = obstacles.length ? obstacles[obstacles.length - 1].x : 0;
-        let obstacle = {
-            x: Math.max(canvas.width + Math.random() * canvas.width, lastObstacleX + 150),
-            y: canvas.height - 50,
-            width: 40,
-            height: 40,
-            type: Math.floor(Math.random() * 3) + 1
-        };
-        obstacles.push(obstacle);
+    function generateObstacles() {
+        for (let i = 0; i < 5; i++) {
+            let obstacle = {
+                x: Math.random() * canvas.width * 2,
+                y: canvas.height - 100,
+                width: 50,
+                height: 50,
+                type: Math.floor(Math.random() * 3) + 1
+            };
+            obstacles.push(obstacle);
+        }
     }
 
     function drawBackground() {
@@ -93,7 +90,6 @@ window.onload = function() {
             } else if (coin.type === 3) {
                 ctx.drawImage(coinImg3, coin.x, coin.y, coin.width, coin.height);
             }
-            coin.x -= speed;
         });
     }
 
@@ -106,7 +102,6 @@ window.onload = function() {
             } else if (obstacle.type === 3) {
                 ctx.drawImage(obstacleImg3, obstacle.x, obstacle.y, obstacle.width, obstacle.height);
             }
-            obstacle.x -= speed;
         });
     }
 
@@ -121,7 +116,6 @@ window.onload = function() {
     }
 
     function handleCollision() {
-        // Check for coin collisions
         coins = coins.filter(coin => {
             if (
                 player.x < coin.x + coin.width &&
@@ -129,22 +123,14 @@ window.onload = function() {
                 player.y < coin.y + coin.height &&
                 player.y + player.height > coin.y
             ) {
-                const points = Math.floor(Math.random() * 5 + 1) * 10;
-                score += points;
-
-                if (score % 100 === 0) {
-                    hearts += 1;
-                    flashScreen('gold');
-                }
-
+                score += 10;
                 return false;
             }
             return true;
         });
 
-        // Check for obstacle collisions
         if (!invincible) {
-            obstacles = obstacles.filter(obstacle => {
+            obstacles.forEach(obstacle => {
                 if (
                     player.x < obstacle.x + obstacle.width &&
                     player.x + player.width > obstacle.x &&
@@ -152,25 +138,23 @@ window.onload = function() {
                     player.y + player.height > obstacle.y
                 ) {
                     hearts -= 1;
-                    flashScreen('darkred');
+                    flashScreen('rgba(139, 0, 0, 0.5)');
                     if (hearts <= 0) {
-                        alert('Game Over! Your score: ' + score);
+                        alert('המשחק נגמר! הניקוד שלך: ' + score);
                         if (score > highScore) {
                             highScore = score;
-                            document.getElementById('highScore').innerText = 'ניקוד שיא -' + highScore;
+                            document.getElementById('highScore').innerText = 'שיא: ' + highScore;
                         }
                         document.location.reload();
                     }
-                    return false;
                 }
-                return true;
             });
         }
     }
 
     function drawScoreAndHearts() {
-        document.getElementById('score').innerText = 'שיא -' + score;
-        document.getElementById('hearts').innerText = 'לבבות -' + hearts;
+        document.getElementById('score').innerText = 'נקודות: ' + score;
+        document.getElementById('hearts').innerText = 'לבבות: ' + hearts;
     }
 
     function jump() {
@@ -190,7 +174,7 @@ window.onload = function() {
     }
 
     function increaseSpeed() {
-        speed += 0.002;  // Increase speed gradually
+        speed += 0.01;
     }
 
     function gameLoop() {
@@ -204,14 +188,6 @@ window.onload = function() {
         handleCollision();
         increaseSpeed();
 
-        // Generate new coins and obstacles
-        if (Math.random() < 0.05) {
-            generateCoin();
-        }
-        if (Math.random() < 0.04) {
-            generateObstacle();
-        }
-
         requestAnimationFrame(gameLoop);
     }
 
@@ -222,8 +198,8 @@ window.onload = function() {
     });
 
     backgroundImg.onload = () => {
-        generateCoin();
-        generateObstacle();
+        generateCoins();
+        generateObstacles();
         gameLoop();
     };
 };
