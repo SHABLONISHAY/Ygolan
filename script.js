@@ -31,7 +31,7 @@ window.onload = function() {
         width: 50 * playerScale,
         height: 50 * playerScale,
         dy: 0,
-        jumpPower: -25,  // Adjusted jump power
+        jumpPower: -20,  // Further adjusted jump power
         gravity: 1
     };
 
@@ -180,9 +180,19 @@ window.onload = function() {
     function flashScreen(color) {
         invincible = true;
         invincibleEndTime = Date.now() + 1500;
-        document.body.style.backgroundColor = color;
+        const overlay = document.createElement('div');
+        overlay.style.position = 'fixed';
+        overlay.style.top = '0';
+        overlay.style.left = '0';
+        overlay.style.width = '100%';
+        overlay.style.height = '100%';
+        overlay.style.backgroundColor = color;
+        overlay.style.opacity = '0.5';
+        overlay.style.zIndex = '1000';
+        document.body.appendChild(overlay);
+
         setTimeout(() => {
-            document.body.style.backgroundColor = '#87CEEB';
+            document.body.removeChild(overlay);
             invincible = false;
         }, 1500);
     }
