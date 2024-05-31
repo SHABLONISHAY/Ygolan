@@ -31,8 +31,10 @@ window.onload = function() {
         width: 50 * playerScale,
         height: 50 * playerScale,
         dy: 0,
-        jumpPower: -40,  // Adjusted jump power to be double the previous value
-        gravity: 1
+        jumpPower: -20,
+        gravity: 1,
+        canExtendJump: true,
+        isJumping: false,
     };
 
     let coins = [];
@@ -105,6 +107,8 @@ window.onload = function() {
         if (player.y + player.height > canvas.height) {
             player.y = canvas.height - player.height;
             player.dy = 0;
+            player.canExtendJump = true;
+            player.isJumping = false;
         }
     }
 
@@ -174,6 +178,10 @@ window.onload = function() {
     function jump() {
         if (player.y + player.height >= canvas.height) {
             player.dy = player.jumpPower;
+            player.isJumping = true;
+        } else if (player.isJumping && player.canExtendJump) {
+            player.dy = player.jumpPower * 0.5;
+            player.canExtendJump = false;
         }
     }
 
@@ -220,6 +228,10 @@ window.onload = function() {
         if (e.code === 'Space') {
             jump();
         }
+    });
+
+    document.addEventListener('touchstart', () => {
+        jump();
     });
 
     backgroundImg.onload = () => {
