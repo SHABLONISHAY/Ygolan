@@ -22,11 +22,14 @@ window.onload = function() {
     const obstacleImg3 = new Image();
     obstacleImg3.src = 'images/obstacle3.png';
 
+    const playerScale = 5;
+    const objectScale = 4.5;
+
     let player = {
         x: 50,
-        y: canvas.height - 500, // Updated to match new size
-        width: 250, // 50 * 5
-        height: 250, // 50 * 5
+        y: canvas.height - 100 * playerScale, // Adjust for new size
+        width: 50 * playerScale,
+        height: 50 * playerScale,
         dy: 0,
         jumpPower: -15,
         gravity: 1
@@ -47,8 +50,8 @@ window.onload = function() {
             let coin = {
                 x: Math.random() * canvas.width * 2,
                 y: Math.random() * (canvas.height - 100),
-                width: 135, // 30 * 4.5
-                height: 135, // 30 * 4.5
+                width: 30 * objectScale,
+                height: 30 * objectScale,
                 type: Math.floor(Math.random() * 3) + 1
             };
             coins.push(coin);
@@ -59,9 +62,9 @@ window.onload = function() {
         for (let i = 0; i < 5; i++) {
             let obstacle = {
                 x: Math.random() * canvas.width * 2,
-                y: canvas.height - 250, // Updated to match new size
-                width: 225, // 50 * 4.5
-                height: 225, // 50 * 4.5
+                y: canvas.height - 50 * objectScale, // Adjust for new size
+                width: 50 * objectScale,
+                height: 50 * objectScale,
                 type: Math.floor(Math.random() * 3) + 1
             };
             obstacles.push(obstacle);
@@ -83,25 +86,15 @@ window.onload = function() {
 
     function drawCoins() {
         coins.forEach(coin => {
-            if (coin.type === 1) {
-                ctx.drawImage(coinImg1, coin.x, coin.y, coin.width, coin.height);
-            } else if (coin.type === 2) {
-                ctx.drawImage(coinImg2, coin.x, coin.y, coin.width, coin.height);
-            } else if (coin.type === 3) {
-                ctx.drawImage(coinImg3, coin.x, coin.y, coin.width, coin.height);
-            }
+            let img = coin.type === 1 ? coinImg1 : coin.type === 2 ? coinImg2 : coinImg3;
+            ctx.drawImage(img, coin.x, coin.y, coin.width, coin.height);
         });
     }
 
     function drawObstacles() {
         obstacles.forEach(obstacle => {
-            if (obstacle.type === 1) {
-                ctx.drawImage(obstacleImg1, obstacle.x, obstacle.y, obstacle.width, obstacle.height);
-            } else if (obstacle.type === 2) {
-                ctx.drawImage(obstacleImg2, obstacle.x, obstacle.y, obstacle.width, obstacle.height);
-            } else if (obstacle.type === 3) {
-                ctx.drawImage(obstacleImg3, obstacle.x, obstacle.y, obstacle.width, obstacle.height);
-            }
+            let img = obstacle.type === 1 ? obstacleImg1 : obstacle.type === 2 ? obstacleImg2 : obstacleImg3;
+            ctx.drawImage(img, obstacle.x, obstacle.y, obstacle.width, obstacle.height);
         });
     }
 
