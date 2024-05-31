@@ -24,9 +24,9 @@ window.onload = function() {
 
     let player = {
         x: 50,
-        y: canvas.height - 100,
-        width: 50,
-        height: 50,
+        y: canvas.height - 500, // Updated to match new size
+        width: 250, // 50 * 5
+        height: 250, // 50 * 5
         dy: 0,
         jumpPower: -15,
         gravity: 1
@@ -47,8 +47,8 @@ window.onload = function() {
             let coin = {
                 x: Math.random() * canvas.width * 2,
                 y: Math.random() * (canvas.height - 100),
-                width: 30,
-                height: 30,
+                width: 135, // 30 * 4.5
+                height: 135, // 30 * 4.5
                 type: Math.floor(Math.random() * 3) + 1
             };
             coins.push(coin);
@@ -59,9 +59,9 @@ window.onload = function() {
         for (let i = 0; i < 5; i++) {
             let obstacle = {
                 x: Math.random() * canvas.width * 2,
-                y: canvas.height - 100,
-                width: 50,
-                height: 50,
+                y: canvas.height - 250, // Updated to match new size
+                width: 225, // 50 * 4.5
+                height: 225, // 50 * 4.5
                 type: Math.floor(Math.random() * 3) + 1
             };
             obstacles.push(obstacle);
