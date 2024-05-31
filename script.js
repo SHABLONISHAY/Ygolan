@@ -23,7 +23,7 @@ window.onload = function() {
     obstacleImg3.src = 'images/obstacle3.png';
 
     const playerScale = 5;
-    const objectScale = 4.5;
+    const objectScale = 3;  // Reduced scale to two-thirds
 
     let player = {
         x: 50,
@@ -31,7 +31,7 @@ window.onload = function() {
         width: 50 * playerScale,
         height: 50 * playerScale,
         dy: 0,
-        jumpPower: -30,  // Increased jump power
+        jumpPower: -50,  // Increased jump power
         gravity: 1
     };
 
