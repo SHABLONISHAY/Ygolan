@@ -27,11 +27,11 @@ window.onload = function() {
 
     let player = {
         x: 50,
-        y: canvas.height - 100 * playerScale, // Adjust for new size
+        y: canvas.height - 100 * playerScale,
         width: 50 * playerScale,
         height: 50 * playerScale,
         dy: 0,
-        jumpPower: -15,
+        jumpPower: -30,  // Increased jump power
         gravity: 1
     };
 
@@ -62,7 +62,7 @@ window.onload = function() {
         for (let i = 0; i < 5; i++) {
             let obstacle = {
                 x: Math.random() * canvas.width * 2,
-                y: canvas.height - 50 * objectScale, // Adjust for new size
+                y: canvas.height - 50 * objectScale,
                 width: 50 * objectScale,
                 height: 50 * objectScale,
                 type: Math.floor(Math.random() * 3) + 1
@@ -105,6 +105,27 @@ window.onload = function() {
         if (player.y + player.height > canvas.height) {
             player.y = canvas.height - player.height;
             player.dy = 0;
+        }
+    }
+
+    function updateCoinsAndObstacles() {
+        coins.forEach(coin => {
+            coin.x -= speed;
+        });
+
+        obstacles.forEach(obstacle => {
+            obstacle.x -= speed;
+        });
+
+        coins = coins.filter(coin => coin.x + coin.width > 0);
+        obstacles = obstacles.filter(obstacle => obstacle.x + obstacle.width > 0);
+
+        if (coins.length < 10) {
+            generateCoins();
+        }
+
+        if (obstacles.length < 5) {
+            generateObstacles();
         }
     }
 
@@ -178,6 +199,7 @@ window.onload = function() {
         drawObstacles();
         drawScoreAndHearts();
         updatePlayer();
+        updateCoinsAndObstacles();
         handleCollision();
         increaseSpeed();
 
