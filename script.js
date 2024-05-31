@@ -31,7 +31,7 @@ window.onload = function() {
         width: 50 * playerScale,
         height: 50 * playerScale,
         dy: 0,
-        jumpPower: -50,  // Increased jump power
+        jumpPower: -25,  // Adjusted jump power
         gravity: 1
     };
 
