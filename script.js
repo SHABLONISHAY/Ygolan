@@ -2,30 +2,29 @@ window.onload = function() {
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    // Set canvas to fill the entire window
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
 
     // Load images
     const backgroundImg = new Image();
     backgroundImg.src = 'images/background.png';
     const playerImg = new Image();
     playerImg.src = 'images/player.png';
-
     const coinImg1 = new Image();
     coinImg1.src = 'images/coin1.png';
-
     const coinImg2 = new Image();
     coinImg2.src = 'images/coin2.png';
-
     const coinImg3 = new Image();
     coinImg3.src = 'images/coin3.png';
-
     const obstacleImg1 = new Image();
     obstacleImg1.src = 'images/obstacle1.png';
-
     const obstacleImg2 = new Image();
     obstacleImg2.src = 'images/obstacle2.png';
-
     const obstacleImg3 = new Image();
     obstacleImg3.src = 'images/obstacle3.png';
 
@@ -35,7 +34,7 @@ window.onload = function() {
         width: 50,
         height: 50,
         dy: 0,
-        jumpPower: -15,
+        jumpPower: -20,
         gravity: 1
     };
 
@@ -45,34 +44,31 @@ window.onload = function() {
     let hearts = 5;
     let highScore = 0;
     let backgroundX = 0;
-    let speed = 2;
+    let speed = 2;  // Start at a slower speed
     let invincible = false;
     let invincibleEndTime = 0;
 
-    function generateCoins() {
-        for (let i = 0; i < 10; i++) {
-            let coin = {
-                x: Math.random() * canvas.width * 2,
-                y: Math.random() * (canvas.height - 100),
-                width: 30,
-                height: 30,
-                type: Math.floor(Math.random() * 3) + 1
-            };
-            coins.push(coin);
-        }
+    function generateCoin() {
+        let coin = {
+            x: canvas.width + Math.random() * canvas.width,
+            y: canvas.height - 100 - Math.random() * 50,
+            width: 30,
+            height: 30,
+            type: Math.floor(Math.random() * 3) + 1
+        };
+        coins.push(coin);
     }
 
-    function generateObstacles() {
-        for (let i = 0; i < 5; i++) {
-            let obstacle = {
-                x: Math.random() * canvas.width * 2,
-                y: canvas.height - 60,
-                width: 50,
-                height: 50,
-                type: Math.floor(Math.random() * 3) + 1
-            };
-            obstacles.push(obstacle);
-        }
+    function generateObstacle() {
+        let lastObstacleX = obstacles.length ? obstacles[obstacles.length - 1].x : 0;
+        let obstacle = {
+            x: Math.max(canvas.width + Math.random() * canvas.width, lastObstacleX + 150),
+            y: canvas.height - 50,
+            width: 40,
+            height: 40,
+            type: Math.floor(Math.random() * 3) + 1
+        };
+        obstacles.push(obstacle);
     }
 
     function drawBackground() {
@@ -97,6 +93,7 @@ window.onload = function() {
             } else if (coin.type === 3) {
                 ctx.drawImage(coinImg3, coin.x, coin.y, coin.width, coin.height);
             }
+            coin.x -= speed;
         });
     }
 
@@ -109,6 +106,7 @@ window.onload = function() {
             } else if (obstacle.type === 3) {
                 ctx.drawImage(obstacleImg3, obstacle.x, obstacle.y, obstacle.width, obstacle.height);
             }
+            obstacle.x -= speed;
         });
     }
 
@@ -146,7 +144,7 @@ window.onload = function() {
 
         // Check for obstacle collisions
         if (!invincible) {
-            obstacles.forEach(obstacle => {
+            obstacles = obstacles.filter(obstacle => {
                 if (
                     player.x < obstacle.x + obstacle.width &&
                     player.x + player.width > obstacle.x &&
@@ -159,18 +157,20 @@ window.onload = function() {
                         alert('Game Over! Your score: ' + score);
                         if (score > highScore) {
                             highScore = score;
-                            document.getElementById('highScore').innerText = 'שיא: ' + highScore;
+                            document.getElementById('highScore').innerText = 'ניקוד שיא -' + highScore;
                         }
                         document.location.reload();
                     }
+                    return false;
                 }
+                return true;
             });
         }
     }
 
     function drawScoreAndHearts() {
-        document.getElementById('score').innerText = 'ניקוד: ' + score;
-        document.getElementById('hearts').innerText = 'לבבות: ' + hearts;
+        document.getElementById('score').innerText = 'שיא -' + score;
+        document.getElementById('hearts').innerText = 'לבבות -' + hearts;
     }
 
     function jump() {
@@ -190,7 +190,7 @@ window.onload = function() {
     }
 
     function increaseSpeed() {
-        speed += 0.01;
+        speed += 0.002;  // Increase speed gradually
     }
 
     function gameLoop() {
@@ -204,6 +204,14 @@ window.onload = function() {
         handleCollision();
         increaseSpeed();
 
+        // Generate new coins and obstacles
+        if (Math.random() < 0.05) {
+            generateCoin();
+        }
+        if (Math.random() < 0.04) {
+            generateObstacle();
+        }
+
         requestAnimationFrame(gameLoop);
     }
 
@@ -214,8 +222,8 @@ window.onload = function() {
     });
 
     backgroundImg.onload = () => {
-        generateCoins();
-        generateObstacles();
+        generateCoin();
+        generateObstacle();
         gameLoop();
     };
 };
