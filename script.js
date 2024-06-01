@@ -41,11 +41,12 @@ window.onload = function() {
     let obstacles = [];
     let score = 0;
     let hearts = 5;
-    let highScore = 0;
+    let highScore = localStorage.getItem('highScore') || 0;
     let backgroundX = 0;
     let speed = 2;
     let invincible = false;
     let invincibleEndTime = 0;
+    let gameOver = false;
 
     function generateCoins() {
         for (let i = 0; i < 10; i++) {
@@ -165,12 +166,15 @@ window.onload = function() {
                     hearts -= 1;
                     flashScreen('rgba(139, 0, 0, 0.5)');
                     if (hearts <= 0) {
+                        gameOver = true;
                         alert('המשחק נגמר! הניקוד שלך: ' + score);
                         if (score > highScore) {
                             highScore = score;
+                            localStorage.setItem('highScore', highScore);
                             document.getElementById('highScore').innerText = 'שיא: ' + highScore;
                         }
-                        document.location.reload();
+                        document.addEventListener('keydown', restartGame, { once: true });
+                        document.addEventListener('touchstart', restartGame, { once: true });
                     }
                 }
             });
@@ -217,6 +221,7 @@ window.onload = function() {
     }
 
     function gameLoop() {
+        if (gameOver) return;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         drawBackground();
         drawPlayer();
@@ -229,6 +234,20 @@ window.onload = function() {
         increaseSpeed();
 
         requestAnimationFrame(gameLoop);
+    }
+
+    function restartGame() {
+        hearts = 5;
+        score = 0;
+        speed = 2;
+        player.y = canvas.height - player.height;
+        player.dy = 0;
+        gameOver = false;
+        coins = [];
+        obstacles = [];
+        generateCoins();
+        generateObstacles();
+        gameLoop();
     }
 
     document.addEventListener('keydown', (e) => {
@@ -246,4 +265,6 @@ window.onload = function() {
         generateObstacles();
         gameLoop();
     };
+
+    document.getElementById('highScore').innerText = 'שיא: ' + highScore;
 };
