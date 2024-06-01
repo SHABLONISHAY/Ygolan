@@ -41,7 +41,7 @@ window.onload = function() {
     let score = 0;
     let hearts = 5;
     let backgroundX = 0;
-    let speed = 2.6; // Increased speed by 1.3 times
+    let speed = 3.6; // Increased speed by 2.3 times
     let gameOver = false;
     let isFlashing = false;
 
@@ -163,7 +163,7 @@ window.onload = function() {
 
     function drawScoreAndHearts() {
         document.getElementById('score').innerText = 'נקודות: ' + score;
-        document.getElementById('hearts').innerText = 'לבבות: ' + hearts;
+        document.getElementById('hearts').innerText = 'נשמה יתרה: ' + hearts;
     }
 
     function jump() {
