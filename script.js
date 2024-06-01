@@ -33,7 +33,6 @@ window.onload = function() {
         dy: 0,
         jumpPower: -30, // Adjusted jump power to 75% of current
         gravity: 1,
-        canDoubleJump: true,
         isJumping: false
     };
 
@@ -42,7 +41,7 @@ window.onload = function() {
     let score = 0;
     let hearts = 5;
     let backgroundX = 0;
-    let speed = 2;
+    let speed = 2.6; // Increased speed by 1.3 times
     let gameOver = false;
     let isFlashing = false;
 
@@ -106,7 +105,6 @@ window.onload = function() {
         if (player.y + player.height > canvas.height) {
             player.y = canvas.height - player.height;
             player.dy = 0;
-            player.canDoubleJump = true; // Reset double jump on ground contact
             player.isJumping = false;
         }
     }
@@ -169,12 +167,9 @@ window.onload = function() {
     }
 
     function jump() {
-        if (player.y + player.height >= canvas.height) {
+        if (player.y + player.height >= canvas.height || player.isJumping) {
             player.dy = player.jumpPower;
             player.isJumping = true;
-        } else if (player.isJumping && player.canDoubleJump) {
-            player.dy = player.jumpPower;
-            player.canDoubleJump = false;
         }
     }
 
@@ -215,10 +210,10 @@ window.onload = function() {
     function restartGame() {
         hearts = 5;
         score = 0;
-        speed = 2;
+        speed = 2.6; // Reset the speed to initial increased speed
         player.y = canvas.height - player.height;
         player.dy = 0;
-        player.canDoubleJump = true;
+        player.isJumping = false;
         gameOver = false;
         coins = [];
         obstacles = [];
