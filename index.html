@@ -1,20 +1,36 @@
 <!DOCTYPE html>
-<html lang="he">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>שבו"ש עושה גיבוש</title>
-    <link rel="stylesheet" href="style.css">
+    <title>שבו"ש בגיבוש</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+        #gameCanvas {
+            display: block;
+        }
+        #score, #hearts {
+            position: absolute;
+            top: 10px;
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+        }
+        #score {
+            left: 10px;
+        }
+        #hearts {
+            right: 10px;
+        }
+    </style>
 </head>
 <body>
-    <div id="game-container">
-        <canvas id="gameCanvas"></canvas>
-        <div id="scoreboard">
-            <span id="score">נקודות: 0</span>
-            <span id="hearts">לבבות: 5</span>
-            <span id="highScore">שיא: 0</span>
-        </div>
-    </div>
+    <canvas id="gameCanvas"></canvas>
+    <div id="score">נקודות: 0</div>
+    <div id="hearts">לבבות: 5</div>
     <script src="script.js"></script>
 </body>
 </html>
