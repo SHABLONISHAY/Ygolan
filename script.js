@@ -31,7 +31,7 @@ window.onload = function() {
         width: 50 * playerScale,
         height: 50 * playerScale,
         dy: 0,
-        jumpPower: -20,
+        jumpPower: -40,  // Increased jump power
         gravity: 1,
         canExtendJump: true,
         isJumping: false,
@@ -63,7 +63,7 @@ window.onload = function() {
     function generateObstacles() {
         for (let i = 0; i < 5; i++) {
             let obstacle = {
-                x: Math.random() * canvas.width * 2,
+                x: (Math.random() * canvas.width * 2) + canvas.width,  // Increased spacing
                 y: canvas.height - 50 * objectScale,
                 width: 50 * objectScale,
                 height: 50 * objectScale,
@@ -133,6 +133,18 @@ window.onload = function() {
         }
     }
 
+    function isCollidingWithPlayer(entity) {
+        const playerImgData = ctx.getImageData(player.x, player.y, player.width, player.height);
+        const entityImgData = ctx.getImageData(entity.x, entity.y, entity.width, entity.height);
+
+        for (let i = 0; i < playerImgData.data.length; i += 4) {
+            if (playerImgData.data[i + 3] !== 0 && entityImgData.data[i + 3] !== 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     function handleCollision() {
         coins = coins.filter(coin => {
             if (
@@ -149,12 +161,7 @@ window.onload = function() {
 
         if (!invincible) {
             obstacles.forEach(obstacle => {
-                if (
-                    player.x < obstacle.x + obstacle.width &&
-                    player.x + player.width > obstacle.x &&
-                    player.y < obstacle.y + obstacle.height &&
-                    player.y + player.height > obstacle.y
-                ) {
+                if (isCollidingWithPlayer(obstacle)) {
                     hearts -= 1;
                     flashScreen('rgba(139, 0, 0, 0.5)');
                     if (hearts <= 0) {
