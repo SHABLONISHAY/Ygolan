@@ -31,8 +31,10 @@ window.onload = function() {
         width: 50 * playerScale,
         height: 50 * playerScale,
         dy: 0,
-        jumpPower: -40,
-        gravity: 1
+        jumpPower: -30, // Adjusted jump power to 75% of current
+        gravity: 1,
+        canDoubleJump: true,
+        isJumping: false
     };
 
     let coins = [];
@@ -42,6 +44,7 @@ window.onload = function() {
     let backgroundX = 0;
     let speed = 2;
     let gameOver = false;
+    let isFlashing = false;
 
     function generateCoins() {
         for (let i = 0; i < 10; i++) {
@@ -57,7 +60,7 @@ window.onload = function() {
     }
 
     function generateObstacles() {
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < 7; i++) { // Increased number of obstacles
             let obstacle = {
                 x: (Math.random() * canvas.width * 2) + canvas.width,
                 y: canvas.height - 50 * objectScale,
@@ -103,6 +106,8 @@ window.onload = function() {
         if (player.y + player.height > canvas.height) {
             player.y = canvas.height - player.height;
             player.dy = 0;
+            player.canDoubleJump = true; // Reset double jump on ground contact
+            player.isJumping = false;
         }
     }
 
@@ -122,7 +127,7 @@ window.onload = function() {
             generateCoins();
         }
 
-        if (obstacles.length < 5) {
+        if (obstacles.length < 7) {
             generateObstacles();
         }
     }
@@ -146,7 +151,7 @@ window.onload = function() {
         });
 
         obstacles.forEach(obstacle => {
-            if (isCollidingWithPlayer(obstacle)) {
+            if (isCollidingWithPlayer(obstacle) && !isFlashing) {
                 hearts -= 1;
                 flashScreen('rgba(139, 0, 0, 0.5)');
                 if (hearts <= 0) {
@@ -166,10 +171,15 @@ window.onload = function() {
     function jump() {
         if (player.y + player.height >= canvas.height) {
             player.dy = player.jumpPower;
+            player.isJumping = true;
+        } else if (player.isJumping && player.canDoubleJump) {
+            player.dy = player.jumpPower;
+            player.canDoubleJump = false;
         }
     }
 
     function flashScreen(color) {
+        isFlashing = true;
         const overlay = document.createElement('div');
         overlay.style.position = 'fixed';
         overlay.style.top = '0';
@@ -183,7 +193,8 @@ window.onload = function() {
 
         setTimeout(() => {
             document.body.removeChild(overlay);
-        }, 500);
+            isFlashing = false;
+        }, 1000); // Flash duration set to 1 second
     }
 
     function gameLoop() {
@@ -207,6 +218,7 @@ window.onload = function() {
         speed = 2;
         player.y = canvas.height - player.height;
         player.dy = 0;
+        player.canDoubleJump = true;
         gameOver = false;
         coins = [];
         obstacles = [];
