@@ -189,4 +189,3 @@ setInterval(() => {
 }, 1000);
 
 update();
-
