@@ -7,25 +7,25 @@ canvas.height = window.innerHeight;
 let score = 0;
 let hearts = 5;
 let heartCoins = 0;
-let speed = 5; // מהירות התחלתית
+let speed = 6; // מהירות התחלתית מוגברת
 let isImmune = false;
 let immuneTimer = null;
 
 const player = {
     x: 50,
     y: canvas.height - 150,
-    width: 50,
-    height: 50,
+    width: 150, // גודל מוגדל פי 3
+    height: 150, // גודל מוגדל פי 3
     dy: 0,
-    jumpHeight: 20,
-    gravity: 1,
+    jumpHeight: 30,
+    gravity: 1.5,
     image: new Image(),
     altImage: new Image(),
     isAltImage: false
 };
 
 player.image.src = 'images/player.png';
-player.altImage.src = 'images/player_alt.png';
+player.altImage.src = 'images/playeralt.png';
 
 const obstacles = [];
 const coins = [];
@@ -35,8 +35,8 @@ function createObstacle() {
     const obstacle = {
         x: canvas.width,
         y: canvas.height - 50,
-        width: 50,
-        height: 50,
+        width: 150, // גודל מוגדל פי 3
+        height: 150, // גודל מוגדל פי 3
         image: new Image()
     };
     obstacle.image.src = 'images/obstacle.png';
@@ -47,8 +47,8 @@ function createCoin() {
     const coin = {
         x: canvas.width,
         y: Math.random() * (canvas.height - 100) + 50,
-        width: 30,
-        height: 30,
+        width: 135, // גודל מוגדל פי 3
+        height: 135, // גודל מוגדל פי 3
         image: new Image()
     };
     coin.image.src = 'images/coin.png';
@@ -59,11 +59,11 @@ function createHeartCoin() {
     const heartCoin = {
         x: canvas.width,
         y: Math.random() * (canvas.height - 100) + 50,
-        width: 30,
-        height: 30,
+        width: 135, // גודל מוגדל פי 3
+        height: 135, // גודל מוגדל פי 3
         image: new Image()
     };
-    heartCoin.image.src = 'images/heart_coin.png';
+    heartCoin.image.src = 'images/heartcoin.png';
     heartCoinsArray.push(heartCoin);
 }
 
@@ -189,4 +189,3 @@ setInterval(() => {
 }, 1000);
 
 update();
-
