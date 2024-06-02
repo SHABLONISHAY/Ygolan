@@ -6,8 +6,7 @@ canvas.height = window.innerHeight;
 
 let score = 0;
 let hearts = 5;
-let heartCoins = 0;
-let speed = 6; // מהירות התחלתית מוגברת
+let speed = 6; 
 let isImmune = false;
 let immuneTimer = null;
 let heartCoinsCollected = 0;
@@ -15,14 +14,15 @@ let heartCoinsCollected = 0;
 const player = {
     x: 50,
     y: canvas.height - 150,
-    width: 150, // גודל מוגדל פי 3
-    height: 150, // גודל מוגדל פי 3
+    width: 150,
+    height: 150,
     dy: 0,
     jumpHeight: 30,
     gravity: 1.5,
     image: new Image(),
     altImage: new Image(),
-    isAltImage: false
+    isAltImage: false,
+    altImageTimer: null
 };
 
 player.image.src = 'images/player.png';
@@ -30,14 +30,14 @@ player.altImage.src = 'images/player2.png';
 
 const obstacles = [];
 const coins = [];
-const heartCoinsArray = [];
+const heartCoins = [];
 
 function createObstacle() {
     const obstacle = {
         x: canvas.width,
-        y: canvas.height - 50,
-        width: 150, // גודל מוגדל פי 3
-        height: 150, // גודל מוגדל פי 3
+        y: canvas.height - 150,
+        width: 150,
+        height: 150,
         image: new Image()
     };
     obstacle.image.src = 'images/obstacle.png';
@@ -48,8 +48,8 @@ function createCoin() {
     const coin = {
         x: canvas.width,
         y: Math.random() * (canvas.height - 100) + 50,
-        width: 135, // גודל מוגדל פי 3
-        height: 135, // גודל מוגדל פי 3
+        width: 135,
+        height: 135,
         image: new Image()
     };
     coin.image.src = 'images/coin.png';
@@ -60,12 +60,12 @@ function createHeartCoin() {
     const heartCoin = {
         x: canvas.width,
         y: Math.random() * (canvas.height - 100) + 50,
-        width: 135, // גודל מוגדל פי 3
-        height: 135, // גודל מוגדל פי 3
+        width: 135,
+        height: 135,
         image: new Image()
     };
     heartCoin.image.src = 'images/heartcoin.png';
-    heartCoinsArray.push(heartCoin);
+    heartCoins.push(heartCoin);
 }
 
 function draw() {
@@ -86,7 +86,7 @@ function draw() {
         ctx.drawImage(coin.image, coin.x, coin.y, coin.width, coin.height);
     });
 
-    heartCoinsArray.forEach(heartCoin => {
+    heartCoins.forEach(heartCoin => {
         ctx.drawImage(heartCoin.image, heartCoin.x, heartCoin.y, heartCoin.width, heartCoin.height);
     });
 
@@ -111,7 +111,7 @@ function update() {
         coin.x -= speed;
     });
 
-    heartCoinsArray.forEach(heartCoin => {
+    heartCoins.forEach(heartCoin => {
         heartCoin.x -= speed;
     });
 
@@ -137,17 +137,16 @@ function update() {
         }
     });
 
-    heartCoinsArray.forEach((heartCoin, index) => {
+    heartCoins.forEach((heartCoin, index) => {
         if (isCollision(player, heartCoin)) {
             hearts++;
-            heartCoins++;
             heartCoinsCollected++;
-            heartCoinsArray.splice(index, 1);
+            heartCoins.splice(index, 1);
             if (heartCoinsCollected >= 5) {
                 heartCoinsCollected = 0;
                 player.isAltImage = true;
                 isImmune = true;
-                setTimeout(() => {
+                player.altImageTimer = setTimeout(() => {
                     player.isAltImage = false;
                     isImmune = false;
                 }, 20000);
