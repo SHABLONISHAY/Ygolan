@@ -4,32 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>שבו"ש בגיבו"ש</title>
-  <link rel="icon" type="image/png" href="images/logo.png">
+<link rel="icon" type="image/png" href="images/logo.png">
     <style>
         body {
             margin: 0;
             overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
         }
-
-        canvas {
-            border: 1px solid black;
+        #gameCanvas {
+            display: block;
         }
-
-        #score, #hearts {
-            font-size: 24px;
-            margin: 10px;
+        #ui {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            color: white;
+            font-size: 20px;
+            z-index: 10;
         }
     </style>
 </head>
 <body>
+    <div id="ui">
+        <div id="score">נקודות: 0</div>
+        <div id="hearts">נשמה יתרה: 5</div>
+    </div>
     <canvas id="gameCanvas"></canvas>
-    <div id="score">נקודות: 0</div>
-    <div id="hearts">נשמה יתרה: 5</div>
     <script src="script.js"></script>
 </body>
 </html>
