@@ -25,7 +25,7 @@ const player = {
 };
 
 player.image.src = 'images/player.png';
-player.altImage.src = 'images/playeralt.png';
+player.altImage.src = 'images/player_alt.png';
 
 const obstacles = [];
 const coins = [];
@@ -63,7 +63,7 @@ function createHeartCoin() {
         height: 135, // גודל מוגדל פי 3
         image: new Image()
     };
-    heartCoin.image.src = 'images/heartcoin.png';
+    heartCoin.image.src = 'images/heart_coin.png';
     heartCoinsArray.push(heartCoin);
 }
 
