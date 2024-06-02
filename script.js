@@ -15,6 +15,8 @@ window.onload = function() {
     coinImg2.src = 'images/coin2.png';
     const coinImg3 = new Image();
     coinImg3.src = 'images/coin3.png';
+    const heartCoinImg = new Image();
+    heartCoinImg.src = 'images/heartcoin.png';
     const obstacleImg1 = new Image();
     obstacleImg1.src = 'images/obstacle1.png';
     const obstacleImg2 = new Image();
@@ -31,7 +33,7 @@ window.onload = function() {
         width: 50 * playerScale,
         height: 50 * playerScale,
         dy: 0,
-        jumpPower: -30, // Adjusted jump power to 75% of current
+        jumpPower: -30,
         gravity: 1,
         isJumping: false
     };
@@ -41,7 +43,7 @@ window.onload = function() {
     let score = 0;
     let hearts = 5;
     let backgroundX = 0;
-    let speed = 3.6; // Increased speed by 2.3 times
+    let speed = 3.3; // Increased speed
     let gameOver = false;
     let isFlashing = false;
 
@@ -58,8 +60,19 @@ window.onload = function() {
         }
     }
 
+    function generateHeartCoin() {
+        let heartCoin = {
+            x: Math.random() * canvas.width * 2,
+            y: Math.random() * (canvas.height - 100),
+            width: 30 * objectScale,
+            height: 30 * objectScale,
+            type: 'heart'
+        };
+        coins.push(heartCoin);
+    }
+
     function generateObstacles() {
-        for (let i = 0; i < 7; i++) { // Increased number of obstacles
+        for (let i = 0; i < 7; i++) {
             let obstacle = {
                 x: (Math.random() * canvas.width * 2) + canvas.width,
                 y: canvas.height - 50 * objectScale,
@@ -86,8 +99,12 @@ window.onload = function() {
 
     function drawCoins() {
         coins.forEach(coin => {
-            let img = coin.type === 1 ? coinImg1 : coin.type === 2 ? coinImg2 : coinImg3;
-            ctx.drawImage(img, coin.x, coin.y, coin.width, coin.height);
+            if (coin.type === 'heart') {
+                ctx.drawImage(heartCoinImg, coin.x, coin.y, coin.width, coin.height);
+            } else {
+                let img = coin.type === 1 ? coinImg1 : coin.type === 2 ? coinImg2 : coinImg3;
+                ctx.drawImage(img, coin.x, coin.y, coin.width, coin.height);
+            }
         });
     }
 
@@ -101,6 +118,12 @@ window.onload = function() {
     function updatePlayer() {
         player.dy += player.gravity;
         player.y += player.dy;
+
+        // Prevent the player from going above the top of the canvas
+        if (player.y < 0) {
+            player.y = 0;
+            player.dy = 0;
+        }
 
         if (player.y + player.height > canvas.height) {
             player.y = canvas.height - player.height;
@@ -142,7 +165,12 @@ window.onload = function() {
     function handleCollision() {
         coins = coins.filter(coin => {
             if (isCollidingWithPlayer(coin)) {
-                score += 10;
+                if (coin.type === 'heart') {
+                    hearts += 1;
+                    flashScreen('rgba(255, 215, 0, 0.5)');
+                } else {
+                    score += 10;
+                }
                 return false;
             }
             return true;
@@ -159,6 +187,11 @@ window.onload = function() {
                 }
             }
         });
+
+        // Generate a heart coin if score is 1000 or multiples of 1000
+        if (score >= 1000 && score % 1000 === 0 && !coins.some(coin => coin.type === 'heart')) {
+            generateHeartCoin();
+        }
     }
 
     function drawScoreAndHearts() {
@@ -167,10 +200,8 @@ window.onload = function() {
     }
 
     function jump() {
-        if (player.y + player.height >= canvas.height || player.isJumping) {
-            player.dy = player.jumpPower;
-            player.isJumping = true;
-        }
+        player.dy = player.jumpPower;
+        player.isJumping = true;
     }
 
     function flashScreen(color) {
@@ -210,7 +241,7 @@ window.onload = function() {
     function restartGame() {
         hearts = 5;
         score = 0;
-        speed = 2.6; // Reset the speed to initial increased speed
+        speed = 3.3; // Reset the speed to initial increased speed
         player.y = canvas.height - player.height;
         player.dy = 0;
         player.isJumping = false;
