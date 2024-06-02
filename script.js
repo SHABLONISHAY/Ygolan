@@ -8,8 +8,8 @@ let score = 0;
 let hearts = 5;
 let speed = 6; 
 let isImmune = false;
-let immuneTimer = null;
 let heartCoinsCollected = 0;
+let playerImageSwitchTimer = null;
 
 const player = {
     x: 50,
@@ -21,8 +21,7 @@ const player = {
     gravity: 1.5,
     image: new Image(),
     altImage: new Image(),
-    isAltImage: false,
-    altImageTimer: null
+    isAltImage: false
 };
 
 player.image.src = 'images/player.png';
@@ -144,12 +143,7 @@ function update() {
             heartCoins.splice(index, 1);
             if (heartCoinsCollected >= 5) {
                 heartCoinsCollected = 0;
-                player.isAltImage = true;
-                isImmune = true;
-                player.altImageTimer = setTimeout(() => {
-                    player.isAltImage = false;
-                    isImmune = false;
-                }, 20000);
+                activateAltImage();
             }
         }
     });
@@ -171,6 +165,16 @@ function jump() {
     if (player.y === canvas.height - player.height || player.dy >= 0) {
         player.dy = -player.jumpHeight;
     }
+}
+
+function activateAltImage() {
+    player.isAltImage = true;
+    isImmune = true;
+    clearTimeout(playerImageSwitchTimer);
+    playerImageSwitchTimer = setTimeout(() => {
+        player.isAltImage = false;
+        isImmune = false;
+    }, 20000);
 }
 
 document.addEventListener('keydown', e => {
