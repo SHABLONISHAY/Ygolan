@@ -6,46 +6,40 @@ canvas.height = window.innerHeight;
 
 let score = 0;
 let hearts = 5;
-let speed = 6;
+let heartCoins = 0;
+let speed = 5; // מהירות התחלתית
 let isImmune = false;
-let heartCoinsCollected = 0;
-let playerImageSwitchTimer = null;
+let immuneTimer = null;
 
 const player = {
     x: 50,
     y: canvas.height - 150,
-    width: 150,
-    height: 150,
+    width: 50,
+    height: 50,
     dy: 0,
-    jumpHeight: 30,
-    gravity: 1.5,
+    jumpHeight: 20,
+    gravity: 1,
     image: new Image(),
     altImage: new Image(),
     isAltImage: false
 };
 
 player.image.src = 'images/player.png';
-player.altImage.src = 'images/player2.png';
-
-const obstacleImages = ['images/obstacle1.png', 'images/obstacle2.png', 'images/obstacle3.png'];
-const coinImages = ['images/coin1.png', 'images/coin2.png', 'images/coin3.png'];
-const heartCoinImageSrc = 'images/heartcoin.png';
-const backgroundImage = new Image();
-backgroundImage.src = 'images/background.png';
+player.altImage.src = 'images/player_alt.png';
 
 const obstacles = [];
 const coins = [];
-const heartCoins = [];
+const heartCoinsArray = [];
 
 function createObstacle() {
     const obstacle = {
         x: canvas.width,
-        y: canvas.height - 150,
-        width: 150,
-        height: 150,
+        y: canvas.height - 50,
+        width: 50,
+        height: 50,
         image: new Image()
     };
-    obstacle.image.src = obstacleImages[Math.floor(Math.random() * obstacleImages.length)];
+    obstacle.image.src = 'images/obstacle.png';
     obstacles.push(obstacle);
 }
 
@@ -53,11 +47,11 @@ function createCoin() {
     const coin = {
         x: canvas.width,
         y: Math.random() * (canvas.height - 100) + 50,
-        width: 135,
-        height: 135,
+        width: 30,
+        height: 30,
         image: new Image()
     };
-    coin.image.src = coinImages[Math.floor(Math.random() * coinImages.length)];
+    coin.image.src = 'images/coin.png';
     coins.push(coin);
 }
 
@@ -65,18 +59,16 @@ function createHeartCoin() {
     const heartCoin = {
         x: canvas.width,
         y: Math.random() * (canvas.height - 100) + 50,
-        width: 135,
-        height: 135,
+        width: 30,
+        height: 30,
         image: new Image()
     };
-    heartCoin.image.src = heartCoinImageSrc;
-    heartCoins.push(heartCoin);
+    heartCoin.image.src = 'images/heart_coin.png';
+    heartCoinsArray.push(heartCoin);
 }
 
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
 
     if (isImmune) {
         ctx.fillStyle = 'rgba(255, 0, 0, 0.5)';
@@ -93,7 +85,7 @@ function draw() {
         ctx.drawImage(coin.image, coin.x, coin.y, coin.width, coin.height);
     });
 
-    heartCoins.forEach(heartCoin => {
+    heartCoinsArray.forEach(heartCoin => {
         ctx.drawImage(heartCoin.image, heartCoin.x, heartCoin.y, heartCoin.width, heartCoin.height);
     });
 
@@ -118,7 +110,7 @@ function update() {
         coin.x -= speed;
     });
 
-    heartCoins.forEach(heartCoin => {
+    heartCoinsArray.forEach(heartCoin => {
         heartCoin.x -= speed;
     });
 
@@ -144,14 +136,19 @@ function update() {
         }
     });
 
-    heartCoins.forEach((heartCoin, index) => {
+    heartCoinsArray.forEach((heartCoin, index) => {
         if (isCollision(player, heartCoin)) {
             hearts++;
-            heartCoinsCollected++;
-            heartCoins.splice(index, 1);
-            if (heartCoinsCollected >= 5) {
-                heartCoinsCollected = 0;
-                activateAltImage();
+            heartCoins++;
+            heartCoinsArray.splice(index, 1);
+            if (heartCoins % 5 === 0) {
+                player.isAltImage = true;
+                isImmune = true;
+                clearTimeout(immuneTimer);
+                immuneTimer = setTimeout(() => {
+                    player.isAltImage = false;
+                    isImmune = false;
+                }, 20000);
             }
         }
     });
@@ -170,19 +167,11 @@ function isCollision(player, object) {
 }
 
 function jump() {
-    if (player.y === canvas.height - player.height || player.dy >= 0) {
+    if (player.y === canvas.height - player.height) {
+        player.dy = -player.jumpHeight;
+    } else if (player.dy >= 0) {
         player.dy = -player.jumpHeight;
     }
-}
-
-function activateAltImage() {
-    player.isAltImage = true;
-    isImmune = true;
-    clearTimeout(playerImageSwitchTimer);
-    playerImageSwitchTimer = setTimeout(() => {
-        player.isAltImage = false;
-        isImmune = false;
-    }, 20000);
 }
 
 document.addEventListener('keydown', e => {
