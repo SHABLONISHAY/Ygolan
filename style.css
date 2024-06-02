@@ -1,18 +1,31 @@
 body {
     margin: 0;
-    overflow: hidden;
+    padding: 0;
+    background-color: #87CEEB;
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: #f0f0f0;
+    height: 100vh;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+}
+
+#game-container {
+    position: relative;
 }
 
 canvas {
-    border: 1px solid black;
+    border: 2px solid #000;
 }
 
-#score, #hearts {
+#scoreboard {
+    position: absolute;
+    top: 10px;
+    left: 10px;
     font-size: 24px;
-    margin: 10px;
+    color: #fff;
+}
+
+#scoreboard span {
+    margin-right: 20px;
 }
