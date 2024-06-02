@@ -1,7 +1,4 @@
 <!DOCTYPE html>
-<html lang="he### HTML (index.html):
-```html
-<!DOCTYPE html>
 <html lang="he">
 <head>
     <meta charset="UTF-8">
@@ -12,27 +9,27 @@
         body {
             margin: 0;
             overflow: hidden;
-            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f0f0;
         }
-        #gameCanvas {
-            display: block;
+
+        canvas {
+            border: 1px solid black;
         }
-        #ui {
-            position: fixed;
-            top: 10px;
-            left: 10px;
-            color: white;
-            font-size: 20px;
-            z-index: 10;
+
+        #score, #hearts {
+            font-size: 24px;
+            margin: 10px;
         }
     </style>
 </head>
 <body>
-    <div id="ui">
-        <div id="score">נקודות: 0</div>
-        <div id="hearts">נשמה יתרה: 5</div>
-    </div>
     <canvas id="gameCanvas"></canvas>
+    <div id="score">נקודות: 0</div>
+    <div id="hearts">נשמה יתרה: 5</div>
     <script src="script.js"></script>
 </body>
 </html>
