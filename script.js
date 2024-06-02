@@ -6,7 +6,7 @@ canvas.height = window.innerHeight;
 
 let score = 0;
 let hearts = 5;
-let speed = 6; 
+let speed = 6;
 let isImmune = false;
 let heartCoinsCollected = 0;
 let playerImageSwitchTimer = null;
@@ -27,6 +27,12 @@ const player = {
 player.image.src = 'images/player.png';
 player.altImage.src = 'images/player2.png';
 
+const obstacleImages = ['images/obstacle1.png', 'images/obstacle2.png', 'images/obstacle3.png'];
+const coinImages = ['images/coin1.png', 'images/coin2.png', 'images/coin3.png'];
+const heartCoinImageSrc = 'images/heartcoin.png';
+const backgroundImage = new Image();
+backgroundImage.src = 'images/background.png';
+
 const obstacles = [];
 const coins = [];
 const heartCoins = [];
@@ -39,7 +45,7 @@ function createObstacle() {
         height: 150,
         image: new Image()
     };
-    obstacle.image.src = 'images/obstacle.png';
+    obstacle.image.src = obstacleImages[Math.floor(Math.random() * obstacleImages.length)];
     obstacles.push(obstacle);
 }
 
@@ -51,7 +57,7 @@ function createCoin() {
         height: 135,
         image: new Image()
     };
-    coin.image.src = 'images/coin.png';
+    coin.image.src = coinImages[Math.floor(Math.random() * coinImages.length)];
     coins.push(coin);
 }
 
@@ -63,12 +69,14 @@ function createHeartCoin() {
         height: 135,
         image: new Image()
     };
-    heartCoin.image.src = 'images/heartcoin.png';
+    heartCoin.image.src = heartCoinImageSrc;
     heartCoins.push(heartCoin);
 }
 
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
 
     if (isImmune) {
         ctx.fillStyle = 'rgba(255, 0, 0, 0.5)';
